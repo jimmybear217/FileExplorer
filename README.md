@@ -17,5 +17,11 @@ $users = array(
 );
 ```
 
+### Limitations
+This system runs with the same permissions than the Web Server itself. I protected my personal docuemnts by refusing access to it at the FileSystem Permission Level.
+```
+chmod -Rv o-rwx ~/Documents
+```
+
 ## Licence
 Feel Free to improve this code, but keep it lightweight, please.
