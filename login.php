@@ -34,7 +34,7 @@
                 //setcookie("key","fsdkjfhdk",time()+60+60);
                 header("Location: login_success.html");
                 include("login_success.html");
-                setcookie("explorer_access",base64_encode((date("Y") + date("m") + date("d")) . "fsdkjfhdk" . $_POST["username"]),time()+60*60*6,realpath($_SERVER["PHP_SELF"]),$_SERVER["SERVER_NAME"],false,false);
+                setcookie("explorer_access",base64_encode((date("Y", time()) + date("m", time()) + date("d", time())) . "fsdkjfhdk" . $_POST["username"]),time()+60*60*6,realpath($_SERVER["PHP_SELF"]),$_SERVER["SERVER_NAME"],false,false);
                 setcookie("explorer_username",$username,time()+60*60*6,realpath($_SERVER["PHP_SELF"]),$_SERVER["SERVER_NAME"],false,false);
             }else{
                 http_response_code(401);
