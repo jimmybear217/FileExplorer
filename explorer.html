@@ -52,7 +52,7 @@
         }
         var d = new Date();
         access_key = access_key.replace('%3D%3D',"==");
-        if (access_key != btoa(d.getFullYear() + d.getMonth() + d.getDate() + 1 + "fsdkjfhdk" + username)){
+        if (access_key != btoa(d.getUTCFullYear() + d.getUTCMonth() + 1 + d.getUTCDate() + "fsdkjfhdk" + username)){
             console.error("Authentification failed (3)");
             window.location.href = "login_error.html";
             document.body.innerHTML = "<div id='loader'></div>";
