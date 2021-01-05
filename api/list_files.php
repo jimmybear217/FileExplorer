@@ -20,7 +20,11 @@
 
     $token = "token";
     $path = realpath($path);
-    header("Content-Type: text/json");
+    $chroot = $userList[$_SESSION["username"]]["chroot"];
+    if (substr($path, 0, strlen($chroot)) != $chroot) {
+        header("Content-Type: text/plain", true, 403);
+        die("Sorry, you cannot access this ressource");
+    }
 
     if (is_dir($path)){
 
@@ -65,6 +69,7 @@
             ));
         }
 
+        header("Content-Type: text/json", true, 200);
         echo json_encode($final);
     
     }else{
