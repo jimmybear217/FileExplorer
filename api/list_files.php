@@ -13,6 +13,7 @@
     if (isset($_GET["path"])){
         $path = $_GET["path"];
     }else{
+        http_response_code(400);
         die("Missing Path");
     }
 
