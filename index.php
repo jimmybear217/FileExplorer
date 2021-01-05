@@ -3,14 +3,20 @@
     header("Cache-Control: no-cache private");
     require_once(__DIR__ . "/assets/inc/settings.inc.php");
     require_once(__DIR__ . "/assets/inc/userList.inc.php");
+    require_once(__DIR__ . "/assets/inc/checkLogin.inc.php");
     $status = "";
     if (!empty($_POST['username']) && !empty($_POST["password"]) && !empty($_POST['submit'])) {
         $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
         if (isset($userList[$username])) {
             if (password_verify($_POST["password"], $userList[$username]["password"])) {
-                $status = "success";
                 $_SESSION["logged_in"] = true;
                 $_SESSION["username"] = $username;
+                session_commit();
+                if (checkLogin()) {
+                    $status = "success";
+                } else {
+                    $status = "errorSession " . json_encode($_SESSION);
+                }
             } else {
                 $status = "wrongPassword";
             }
