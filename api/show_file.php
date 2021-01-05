@@ -1,20 +1,18 @@
 <?php
 
+    session_start();
+    require_once(__DIR__ . "/../assets/inc/userList.inc.php");
+    require_once(__DIR__ . "/../assets/inc/checkLogin.inc.php");
+
+    if (!checkLogin()) {
+        header('WWW-Authenticate: OAuth realm="Access to fileExplorer"', true, 401);
+        die("invalid login");
+    }
+
     if (isset($_GET["path"])){
         $path = $_GET["path"];
     }else{
         die("Missing Path");
-    }
-
-    if (isset($_COOKIE["explorer_access"]) && isset($_COOKIE["explorer_username"])){
-        $token = $_COOKIE["explorer_access"];
-        $correct = base64_encode((date("Y", time()) + date("m", time()) + date("d", time())) . "fsdkjfhdk" . $_COOKIE["explorer_username"]);
-
-        if ($token != $correct){
-            die("Wrong token");
-        }
-    }else{
-        die("Missing token");
     }
 
     $mime = mime_content_type($path);
