@@ -85,6 +85,8 @@
                     document.getElementById("path").innerText = target;
                 } else if (response.status == 401) {
                     document.location.href = "index.html";
+                } else if (response.status == 418) {
+                    open_file(target);
                 } else {
                     response.text().then(alert);
                     if (document.getElementById("path").hasAttribute("data-pastTarget"))
