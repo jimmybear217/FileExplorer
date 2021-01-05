@@ -3,6 +3,7 @@
     $settings = array(
         "defaultUser" => array(
             "username" => "DemoUser",
-            "password" => "SuperSecretPassword"
-        )
+            "password" => "SuperSecurePassword"
+        ),
+        "logging" => true
     );

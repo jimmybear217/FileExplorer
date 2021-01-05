@@ -2,17 +2,15 @@
     session_start();
     header("Cache-Control: no-cache private");
     require_once(__DIR__ . "/assets/inc/settings.inc.php");
+    require_once(__DIR__ . "/assets/inc/userList.inc.php");
     $status = "";
     if (!empty($_POST['username']) && !empty($_POST["password"]) && !empty($_POST['submit'])) {
-        require_once(__DIR__ . "/assets/inc/usersList.inc.php");
         $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
-        // gather input
         if (isset($userList[$username])) {
             if (password_verify($_POST["password"], $userList[$username]["password"])) {
                 $status = "success";
-                // kept cookie system from first version as a memento
-                setcookie("explorer_access",base64_encode((date("Y", time()) + date("m", time()) + date("d", time())) . "fsdkjfhdk" . $_POST["username"]),time()+60*60*6,realpath($_SERVER["PHP_SELF"]),$_SERVER["SERVER_NAME"],false,false);
-                setcookie("explorer_username",$username,time()+60*60*6,realpath($_SERVER["PHP_SELF"]),$_SERVER["SERVER_NAME"],false,false);
+                $_SESSION["logged_in"] = true;
+                $_SESSION["username"] = $username;
             } else {
                 $status = "wrongPassword";
             }
@@ -56,6 +54,8 @@
                 $writeForm=False;
                 break;
         }
+        if ($status != "success" && isset($username) && $settings["logging"] = true)
+                error_log("[fileExplorer] Unable to log in as $username: $status");
         
         if ($writeForm) {
             $form_username = "";

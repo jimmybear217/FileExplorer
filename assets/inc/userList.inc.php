@@ -10,4 +10,3 @@
             "chroot" => realpath(__DIR__ . str_repeat("/..", 5)) // 5 levels up
         )
     );
-?>
