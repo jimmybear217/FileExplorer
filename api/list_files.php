@@ -49,14 +49,14 @@
             )
         );
         foreach ($dirs as $line) {
-            array_push($final, array(
+            array_push($final["files"], array(
                 "type" => "dir",
                 "path" => $line["path"],
                 "name" => $line["name"]
             ));
         }
         foreach ($files as $line) {
-            array_push($final, array(
+            array_push($final["files"], array(
                 "type" => "file",
                 "path" => $line["path"],
                 "name" => $line["name"],
