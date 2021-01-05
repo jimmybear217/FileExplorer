@@ -28,43 +28,45 @@
 
         $dirs = array();
         $files = array();
+        $exclusions = array(".");
 
         foreach ($files1 as $name) {
-            if ($name != ".." AND $name != "."){
-                //echo "<a href='list_files.php?path=" . $path . "/" . $name . "'>" . $name . "</a>";
-                if (is_dir($path . "/" . $name)){
-                    array_push($dirs,array("path" => $path . "/" . $name, "name" => $name));
-                }else{
-                    array_push($files,array("path" => $path . "/" . $name, "name" => $name));
+            if (!in_array($name, $exclusions)){
+                $node = array("path" => realpath($path . "/" . $name), "name" => $name);
+                if (is_dir($path . "/" . $name)) {
+                    array_push($dirs, $node);
+                } else {
+                    array_push($files, $node);
                 }
             }
         }
 
-        $final = '{"files":[{"type":"dir","path":"' . $path . '/..","name": ".."}';
+        $final = array(
+            "files" => array(),
+            "local" => array(
+                "path" => realpath($path),
+                "basename" => basename($path)
+            )
+        );
         foreach ($dirs as $line) {
-            $final .= ',{"type":"dir","path":"' . htmlentities($line["path"]) . '","name":"' . $line["name"] . '"}';
+            array_push($final, array(
+                "type" => "dir",
+                "path" => $line["path"],
+                "name" => $line["name"]
+            ));
         }
         foreach ($files as $line) {
-            $final .= ',{"type":"file","path":"' . htmlentities($line["path"]) . '","name":"' . $line["name"] . '"}';
+            array_push($final, array(
+                "type" => "file",
+                "path" => $line["path"],
+                "name" => $line["name"],
+                "mime" => mime_content_type($path)
+            ));
         }
-        $final .= '],';
-        $final .= '"local": {"path": "' . $path . '","basename": "' . basename($path) . '"}';
-        $final .= '}';
 
-        echo $final;
+        echo json_encode($final);
     
     }else{
-        $final = '{"files":[{"type":"dir","path":"' . $path . '/..","name": ".."}';
-        $final .= ',{"type":"file","path":"' . dirname($path) . '/' . basename($path) . '","name":"' . basename($path) . '"}';
-        $final .= '],';
-        if (basename($path) == ""){
-            $final .= '"local": {"path": "' . $path . '","basename": "/"}';
-        }else{
-            $final .= '"local": {"path": "' . $path . '","basename": "' . basename($path) . '"}';
-        }
-        $final .= '}';
-
-        header("Content-Type: text/json");
-        echo $final;
+        header("Location: show_file.php?path=" . $path, true, 302);
     }
 ?>
