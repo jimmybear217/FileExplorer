@@ -42,7 +42,6 @@
         fs_div.innerHTML = "";
 
         for (var i in fs_data_array["files"]) {
-            console.log(fs_data_array["files"][i]);
             var link = document.createElement("a");
             link.className = "file_card";
             if (fs_data_array["files"][i]["type"] == "dir") {
@@ -74,14 +73,24 @@
 
     function filesystem_move(target) {
         if (target == null) {
-            target = document.getElementById("path").innerHTML;
+            target = document.getElementById("path").innerText;
         }
+        document.getElementById("path").setAttribute("data-pastTarget", document.getElementById("path").innerText)
         console.log("moving to : " + target);
         document.getElementById("filesystem").innerHTML = "<div id='loader'></div>";
-        $.get("api/list_files.php?path=" + target + "&token=" + document.body.getAttribute("data-username") + ":" + document.body.getAttribute("data-key"), (data, status, xhr) => {
-            filesystem_update(data);
-        });
-        document.getElementById("path").innerHTML = target;
+        fetch("api/list_files.php?path=" + target)
+            .then((response) => {
+                if (response.status == 200) {
+                    response.json().then(filesystem_update);
+                    document.getElementById("path").innerText = target;
+                } else if (response.status == 401) {
+                    document.location.href = "index.html";
+                } else {
+                    response.text().then(alert);
+                    if (document.getElementById("path").hasAttribute("data-pastTarget"))
+                        filesystem_move(document.getElementById("path").getAttribute("data-pastTarget"))
+                }
+            })
     }
 
     function open_file(path) {
