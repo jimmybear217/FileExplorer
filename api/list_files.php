@@ -57,7 +57,8 @@
             array_push($final["files"], array(
                 "type" => "dir",
                 "path" => $line["path"],
-                "name" => $line["name"]
+                "name" => $line["name"],
+                "mime" => mime_content_type($line["path"])
             ));
         }
         foreach ($files as $line) {
@@ -65,7 +66,7 @@
                 "type" => "file",
                 "path" => $line["path"],
                 "name" => $line["name"],
-                "mime" => mime_content_type($path)
+                "mime" => mime_content_type($line["path"])
             ));
         }
 
