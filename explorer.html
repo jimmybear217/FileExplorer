@@ -47,6 +47,8 @@
             var icon = document.createElement("img");
             if (fs_data_array["files"][i]["mime"]) {
                 icon.setAttribute("src", "https://jimmybear217.dev/projects/repo/auto_mime_icon/auto-mime-icon/www/mime-icon.php?mime=" + fs_data_array["files"][i]["mime"] + "&filename=" + fs_data_array["files"][i]["name"]);
+                icon.setAttribute("height", "32");
+                icon.setAttribute("width", "32");
                 icon.style.verticalAlign = "middle";
                 icon.style.marginRight = "5px";
                 link.appendChild(icon);
